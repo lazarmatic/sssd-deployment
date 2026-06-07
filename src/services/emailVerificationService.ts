@@ -291,7 +291,8 @@ If you did not request this password reset, please ignore this email. Your accou
 © ${new Date().getFullYear()} Security System. All rights reserved.
     `;
 
-    await sendVerificationEmail(email, 'Password Recovery Request', htmlContent, textContent);
+    sendVerificationEmail(email, 'Password Recovery Request', htmlContent, textContent)
+        .catch(e => console.error('Failed to send password recovery email:', e));
 }
 
 /**
@@ -360,6 +361,7 @@ Security Tips:
 © ${new Date().getFullYear()} Security System. All rights reserved.
     `;
 
-    await sendVerificationEmail(email, 'Password Changed Successfully', htmlContent, textContent);
+    sendVerificationEmail(email, 'Password Changed Successfully', htmlContent, textContent)
+        .catch(e => console.error('Failed to send password reset confirmation email:', e));
 }
 

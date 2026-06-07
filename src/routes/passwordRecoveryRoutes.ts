@@ -113,7 +113,7 @@ router.post('/request', async (req: Request, res: Response) => {
         // Send reset email
         try {
             const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetRequest.token}`;
-            await sendPasswordRecoveryEmail(user.email, user.username, resetLink);
+            sendPasswordRecoveryEmail(user.email, user.username, resetLink);
             console.log(`[PASSWORD_RECOVERY] Reset email sent to ${email}`);
         } catch (emailError) {
             console.error('Failed to send reset email:', emailError);
@@ -263,7 +263,7 @@ router.post('/reset', async (req: Request, res: Response) => {
 
         // Send confirmation email
         try {
-            await sendPasswordResetConfirmationEmail(userEmail, user.username);
+            sendPasswordResetConfirmationEmail(userEmail, user.username);
         } catch (emailError) {
             console.error('Failed to send confirmation email:', emailError);
         }

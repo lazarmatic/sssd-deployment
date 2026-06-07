@@ -296,7 +296,7 @@ export async function login(req: Request, res: Response) {
 
         // Send SMS with verification code
         try {
-            await sendVerificationCode(phoneNumber, verificationCode);
+            sendVerificationCode(phoneNumber, verificationCode);
             console.log(`2FA code sent to ${phoneNumber}`);
         } catch (smsError) {
             console.error("Failed to send SMS:", smsError);
@@ -499,7 +499,7 @@ export async function resend2FACode(req: Request, res: Response) {
 
         // Resend the code
         try {
-            await sendVerificationCode(session.phoneNumber, session.code);
+            sendVerificationCode(session.phoneNumber, session.code);
             console.log(`2FA code resent to ${session.phoneNumber}`);
         } catch (smsError) {
             console.error("Failed to resend SMS:", smsError);
@@ -717,12 +717,12 @@ export async function register(req: Request, res: Response) {
             const htmlContent = generateEmailVerificationContent(username, verificationLink);
             const textContent = generateEmailVerificationTextContent(username, verificationLink);
 
-            await sendVerificationEmail(
+            sendVerificationEmail(
                 email,
                 "Please verify your email address - Security System",
                 htmlContent,
                 textContent
-            );
+            ).catch(e => console.error("Email error:", e));
             console.log(`✓ Email verification sent to: ${email}`);
         } catch (emailError) {
             console.error("Failed to send verification email:", emailError);
@@ -1006,7 +1006,8 @@ export async function changePassword(req: Request, res: Response) {
 
         // Send confirmation email
         try {
-            await sendPasswordResetConfirmationEmail(dbUser.email, dbUser.username);
+            sendPasswordResetConfirmationEmail(dbUser.email, dbUser.username)
+                .catch(e => console.error("Email error:", e));
             console.log(`[PASSWORD_CHANGE] Confirmation email sent to ${dbUser.email}`);
         } catch (emailError) {
             console.error("Failed to send confirmation email:", emailError);
@@ -1141,12 +1142,12 @@ export async function resendVerificationEmail(req: Request, res: Response) {
             const htmlContent = generateEmailVerificationContent(user.username, verificationLink);
             const textContent = generateEmailVerificationTextContent(user.username, verificationLink);
 
-            await sendVerificationEmail(
+            sendVerificationEmail(
                 email,
                 "New verification link - Security System",
                 htmlContent,
                 textContent
-            );
+            ).catch(e => console.error("Email error:", e));
             console.log(`✓ New verification email sent to: ${email}`);
         } catch (emailError) {
             console.error("Failed to send verification email:", emailError);
