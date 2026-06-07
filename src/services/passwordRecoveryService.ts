@@ -72,7 +72,7 @@ export async function validatePasswordResetToken(
     try {
         const resetRequest = await PasswordReset.findOne({
             where: { resetToken: token },
-            include: [{ model: User, as: 'user', attributes: ['id', 'email'] }] as any,
+            include: [{ model: User, as: 'User', attributes: ['id', 'email'] }] as any,
         });
 
         if (!resetRequest) {
