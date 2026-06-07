@@ -241,3 +241,45 @@ const styles = {
         transition: 'background-color 0.3s ease',
     },
 };
+/**
+ * Sidebar Navigation Component
+ */
+
+interface NavLink {
+    label: string;
+    href: string;
+    icon?: string;
+}
+
+interface SidebarProps {
+    links: NavLink[];
+    isAdmin?: boolean;
+}
+
+export function Sidebar({ links, isAdmin = false }: SidebarProps) {
+    const router = useRouter();
+
+    return (
+        <aside style={styles.sidebar}>
+            <div style={styles.sidebarContent}>
+                {isAdmin && (
+                    <div style={styles.badge}>
+                        <strong>ADMIN</strong>
+                    </div>
+                )}
+                <nav>
+                    <ul style={styles.navList}>
+                        {links.map((link, index) => (
+                            <li key={index}>
+                                <Link href={link.href} style={styles.navLink}>
+                                    {link.icon && <span>{link.icon} </span>}
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+    );
+}
