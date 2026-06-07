@@ -226,9 +226,6 @@ app.use(
     createProxyMiddleware({
         target: `http://127.0.0.1:${NEXT_PORT}`,
         changeOrigin: true,
-        // Strip the /front prefix so Next.js sees requests at /
-        // e.g.  /front/login  →  /login  inside Next.js
-        pathRewrite: { "^/front": "" },
         on: {
             error: (err, _req, res: any) => {
                 console.error("Next.js proxy error:", err.message);
