@@ -306,12 +306,10 @@ export async function login(req: Request, res: Response) {
         }
 
         // Send email with verification code as backup 2FA method
-        try {
-            await sendEmailVerificationCode(user.email, verificationCode);
-            console.log(`2FA code sent via email to ${user.email}`);
-        } catch (emailError) {
-            console.error("Failed to send email verification code:", emailError);
-        }
+        // Send email with verification code as backup 2FA method (non-blocking)
+        sendEmailVerificationCode(user.email, verificationCode)
+            .then(() => console.log(`2FA code sent via email to ${user.email}`))
+            .catch((emailError) => console.error("Failed to send email verification code:", emailError));
 
         await auditService.logAuditEvent({
             userId: user.id,
@@ -510,15 +508,9 @@ export async function resend2FACode(req: Request, res: Response) {
             });
         }
 
-        // Send email with verification code as backup method
-        try {
-            await sendEmailVerificationCode(session.email, session.code);
-            console.log(`2FA code resent via email to ${session.email}`);
-        } catch (emailError) {
-            console.error("Failed to resend email verification code:", emailError);
-            // Don't fail if email fails - SMS was sent successfully
-        }
-
+        sendEmailVerificationCode(session.email, session.code)
+            .then(() => console.log(`2FA code sent via email to ${session.email}`))
+            .catch((emailError) => console.error("Failed to send email verification code:", emailError));
         return res.status(200).json({
             message: `Verification code has been resent to ${session.phoneNumber}`,
         });
