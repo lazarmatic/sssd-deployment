@@ -209,52 +209,6 @@ const styles = {
     username: {
         fontWeight: 500,
     },
-};
-
-/**
- * Sidebar Navigation Component
- */
-
-interface NavLink {
-    label: string;
-    href: string;
-    icon?: string;
-}
-
-interface SidebarProps {
-    links: NavLink[];
-    isAdmin?: boolean;
-}
-
-export function Sidebar({ links, isAdmin = false }: SidebarProps) {
-    const router = useRouter();
-
-    return (
-        <aside style={styles.sidebar}>
-            <div style={styles.sidebarContent}>
-                {isAdmin && (
-                    <div style={styles.badge}>
-                        <strong>ADMIN</strong>
-                    </div>
-                )}
-                <nav>
-                    <ul style={styles.navList}>
-                        {links.map((link, index) => (
-                            <li key={index}>
-                                <Link href={link.href} style={styles.navLink}>
-                                    {link.icon && <span>{link.icon} </span>}
-                                    {link.label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-            </div>
-        </aside>
-    );
-}
-
-const sidebarStyles = {
     sidebar: {
         width: '250px',
         backgroundColor: '#f8f9fa',
@@ -271,7 +225,7 @@ const sidebarStyles = {
         padding: '8px 12px',
         borderRadius: '4px',
         marginBottom: '20px',
-        textAlign: 'center',
+        textAlign: 'center' as const,
         fontSize: '12px',
     },
     navList: {
@@ -287,5 +241,3 @@ const sidebarStyles = {
         transition: 'background-color 0.3s ease',
     },
 };
-
-Object.assign(styles, { sidebar: sidebarStyles.sidebar, sidebarContent: sidebarStyles.sidebarContent, badge: sidebarStyles.badge, navList: sidebarStyles.navList, navLink: sidebarStyles.navLink });
