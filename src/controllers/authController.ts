@@ -30,6 +30,7 @@ import { isDeviceTrusted, markDeviceAsTrusted } from "../services/trustedDeviceS
 import { generateTokenPair } from "../services/jwtService";
 import { createSession, revokeAllUserSessions } from "../services/sessionService";
 import { validatePassword } from "../services/passwordValidationService";
+import ReservedUsername from '../models/ReservedUsername';
 import { config } from "../config";
 import User from "../models/User";
 
@@ -621,6 +622,17 @@ export async function register(req: Request, res: Response) {
         if (reservedCheck.isReserved) {
             return res.status(400).json({
                 error: reservedCheck.error,
+                field: "username",
+            });
+        }
+
+        // Check database reserved usernames (managed via admin panel)
+        const dbReserved = await ReservedUsername.findOne({
+            where: { username: username.toLowerCase() }
+        });
+        if (dbReserved) {
+            return res.status(400).json({
+                error: `Username '${username}' is reserved and cannot be used. Please choose a different username.`,
                 field: "username",
             });
         }
