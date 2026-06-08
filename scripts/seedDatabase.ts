@@ -54,6 +54,48 @@ export async function seedDatabase(): Promise<void> {
         } else {
             console.log("✓ Admin user already exists, skipping");
         }
+        // Seed hardcoded reserved usernames into database
+        const ReservedUsername = (await import('../src/models/ReservedUsername')).default;
+        const hardcodedReserved = [
+            { username: 'admin', reason: 'System reserved username' },
+            { username: 'root', reason: 'System reserved username' },
+            { username: 'system', reason: 'System reserved username' },
+            { username: 'administrator', reason: 'System reserved username' },
+            { username: 'superuser', reason: 'System reserved username' },
+            { username: 'sudo', reason: 'System reserved username' },
+            { username: 'sysadmin', reason: 'System reserved username' },
+            { username: 'noreply', reason: 'System reserved username' },
+            { username: 'support', reason: 'System reserved username' },
+            { username: 'help', reason: 'System reserved username' },
+            { username: 'contact', reason: 'System reserved username' },
+            { username: 'security', reason: 'System reserved username' },
+            { username: 'postmaster', reason: 'System reserved username' },
+            { username: 'webmaster', reason: 'System reserved username' },
+            { username: 'api', reason: 'System reserved username' },
+            { username: 'bot', reason: 'System reserved username' },
+            { username: 'service', reason: 'System reserved username' },
+            { username: 'test', reason: 'System reserved username' },
+            { username: 'demo', reason: 'System reserved username' },
+            { username: 'staging', reason: 'System reserved username' },
+            { username: 'localhost', reason: 'System reserved username' },
+            { username: 'moderator', reason: 'System reserved username' },
+            { username: 'staff', reason: 'System reserved username' },
+            { username: 'official', reason: 'System reserved username' },
+            { username: 'verified', reason: 'System reserved username' },
+            { username: 'developer', reason: 'System reserved username' },
+            { username: 'login', reason: 'System reserved username' },
+            { username: 'logout', reason: 'System reserved username' },
+            { username: 'register', reason: 'System reserved username' },
+            { username: 'signup', reason: 'System reserved username' },
+        ];
+
+        for (const entry of hardcodedReserved) {
+            const existing = await ReservedUsername.findOne({ where: { username: entry.username } });
+            if (!existing) {
+                await ReservedUsername.create(entry);
+            }
+        }
+        console.log('✓ Reserved usernames seeded successfully');
 
         console.log("✓ Database seeding completed");
     } catch (error) {
