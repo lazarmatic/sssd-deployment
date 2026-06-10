@@ -198,14 +198,14 @@ export default function LoginPage() {
                         </div>
 
                         <a
-                            href="https://sssdapp.mooo.com/api/auth/oauth/google"
+                            href="https://sssdapp.mooo.com/api/oauth/google"
                             style={styles.googleBtn}
                         >
                             🔵 Login with Google
                         </a>
 
                         <a
-                            href="https://sssdapp.mooo.com/api/auth/oauth/github"
+                            href="https://sssdapp.mooo.com/api/oauth/github"
                             style={styles.githubBtn}
                         >
                             ⚫ Login with GitHub
