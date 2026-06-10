@@ -90,7 +90,7 @@ export async function findOrCreateOAuthUser(
             include: [{ model: User, as: 'User' }] as any,
         });
 
-        if (existingAccount && (existingAccount as any).user) {
+        if (existingAccount && (existingAccount as any).User) {
             // Update tokens
             await existingAccount.update({
                 accessToken: tokens.accessToken,
@@ -99,7 +99,7 @@ export async function findOrCreateOAuthUser(
             });
 
             return {
-                user: (existingAccount as any).user,
+                user: (existingAccount as any).User,
                 isNew: false,
                 account: existingAccount,
             };
