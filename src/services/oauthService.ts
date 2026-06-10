@@ -87,7 +87,7 @@ export async function findOrCreateOAuthUser(
                 provider,
                 providerAccountId: profile.id,
             },
-            include: [{ model: User, as: 'user' }] as any,
+            include: [{ model: User, as: 'User' }] as any,
         });
 
         if (existingAccount && (existingAccount as any).user) {
