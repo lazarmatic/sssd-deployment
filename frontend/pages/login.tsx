@@ -77,11 +77,10 @@ export default function LoginPage() {
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('refreshToken', data.refreshToken);
                 localStorage.setItem('sessionId', data.sessionId);
-                await refreshUser(); // sync auth context
+                await refreshUser();
                 if (data.showTrustDeviceOption) {
                     setShowTrustDevice(true);
                 }
-                // let useEffect handle redirect based on role
             } else {
                 setError(data.error || '2FA verification failed');
             }
@@ -193,6 +192,24 @@ export default function LoginPage() {
                         >
                             {isLoading ? 'Logging in...' : 'Login'}
                         </button>
+
+                        <div style={styles.divider}>
+                            <span>— or continue with —</span>
+                        </div>
+
+                        <a
+                            href="https://sssdapp.mooo.com/api/auth/oauth/google"
+                            style={styles.googleBtn}
+                        >
+                            🔵 Login with Google
+                        </a>
+
+                        <a
+                            href="https://sssdapp.mooo.com/api/auth/oauth/github"
+                            style={styles.githubBtn}
+                        >
+                            ⚫ Login with GitHub
+                        </a>
                     </form>
                 )}
 
@@ -321,5 +338,36 @@ const styles = {
         textAlign: 'center' as const,
         marginTop: '20px',
         fontSize: '14px',
+    },
+    divider: {
+        textAlign: 'center' as const,
+        margin: '20px 0 15px 0',
+        color: '#666',
+        fontSize: '13px',
+    },
+    googleBtn: {
+        display: 'block',
+        width: '100%',
+        padding: '10px',
+        marginBottom: '10px',
+        backgroundColor: '#4285F4',
+        color: 'white',
+        textAlign: 'center' as const,
+        borderRadius: '4px',
+        textDecoration: 'none',
+        fontSize: '14px',
+        boxSizing: 'border-box' as const,
+    },
+    githubBtn: {
+        display: 'block',
+        width: '100%',
+        padding: '10px',
+        backgroundColor: '#333',
+        color: 'white',
+        textAlign: 'center' as const,
+        borderRadius: '4px',
+        textDecoration: 'none',
+        fontSize: '14px',
+        boxSizing: 'border-box' as const,
     },
 };
